@@ -1,7 +1,7 @@
 function MenuHeader() {
     return (
-        <div>
-            <h1>Menu</h1>
+        <div className="w-full h-auto border-red-500 border-2">
+            <h1 className="">Menu</h1>
         </div>
     )
 }

@@ -1,7 +1,10 @@
 import Desk from "../../models/Desk";
 
-function DeskAssigned(props: any) {
-    const {Desk:desk} = props;
+type DeskAssignedProps = {
+    desk: Desk
+}
+
+function DeskAssigned({desk}: DeskAssignedProps) {
     return (
         <div>
             <h4>Desk Assigned</h4>

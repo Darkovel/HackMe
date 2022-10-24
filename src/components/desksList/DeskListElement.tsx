@@ -1,7 +1,10 @@
 import Desk from "../../models/Desk";
 
-function DeskListElement(props: any) {
-    const {Desk:desk} = props;
+type DeskProps = {
+    desk: Desk
+}
+
+function DeskListElement({desk} : DeskProps) {
 
     return (
         <div>{desk.name}</div>

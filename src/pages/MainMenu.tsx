@@ -4,11 +4,15 @@ import EmployeesListSide from "../components/employeesList/EmployeesListSide";
 
 function MainMenu() {
     return (
-        <div>
-            <h1>Main Menu</h1>
-            <EmployeesListSide />
-            <DesksListTop />
-            <DesksAssignedMenu />
+        <div className="border-2 border-green-500">
+            <h1 className="text-center font-bold">Main Menu</h1>
+            <div className="flex">
+                <EmployeesListSide />
+                <div className="block w-full">
+                    <DesksListTop />
+                    <DesksAssignedMenu />
+                </div>
+            </div>
         </div>
     )
 }

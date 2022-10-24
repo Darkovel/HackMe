@@ -1,7 +1,10 @@
 import Employee from "../../models/Employee";
 
-function EmployeeListElement(props:any) {
-    const {Employee:employee} = props;
+type EmployeeProps = {
+    employee: Employee
+}
+
+function EmployeeListElement({employee}: EmployeeProps) {
     return (
         <div>{employee.name}</div>
     )
