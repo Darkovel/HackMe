@@ -1,4 +1,4 @@
-import Desk from "../../models/Desk";
+import {Desk} from "../../models/Desk";
 
 type DeskProps = {
     desk: Desk
@@ -7,7 +7,10 @@ type DeskProps = {
 function DeskListElement({desk} : DeskProps) {
 
     return (
-        <div>{desk.name}</div>
+        <div className="grid">
+            <div className="justify-self-center w-12 h-12 rounded-full bg-blue-500"></div>
+            <p className="text-center">{desk.name}</p>
+        </div>
     )
 }
 

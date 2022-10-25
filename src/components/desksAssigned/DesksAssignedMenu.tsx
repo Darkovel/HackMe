@@ -1,14 +1,16 @@
-import Desk from "../../models/Desk";
+import { useContext} from "react";
+import { DesksContext, DesksContent } from "../../contexts/DesksContext";
+import {Desk} from "../../models/Desk";
 import DeskAssigned from "./DeskAssigned";
 
 function DesksAssignedMenu() {
-    const desks:Desk[] = [];
+    let deskContext = useContext<DesksContent>(DesksContext);
 
     return (
-        <div className="border-2 border-orange-500 w-full h-max">
+        <div className="border-2 bg-orange-200 w-full h-full">
             <h3 className="text-center font-bold">Desks Assigned</h3>
-            <ul className="m-2">
-                {desks.map(desk => (
+            <ul className="grid grid-flow-row-dense grid-flow-rows grid-cols-4 gap-4">
+                {deskContext.desks.map(desk => (
                     <DeskAssigned
                     key={desk.id}
                     desk={desk} />

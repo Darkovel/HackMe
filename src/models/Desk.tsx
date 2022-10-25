@@ -1,7 +1,10 @@
-interface Desk {
-    id: number;
-    name: string;
-    description?: string;
+export type Desk = {
+    id: string,
+    name: string,
+    description?: string,
 }
 
-export default Desk;
+export type DeskData = {
+    name: string,
+    description?: string,
+}

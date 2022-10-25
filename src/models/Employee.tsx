@@ -1,11 +1,16 @@
-import Desk from './Desk';
+import {Desk} from './Desk';
 
-interface Employee {
-    id: number;
+export type Employee = {
+    id: string;
     name: string;
     email: string;
     listDesk?: Desk[];
     description?: string;
-}
+};
 
-export default Employee;
+export type EmployeeData = {
+    name: string;
+    email: string;
+    listDesk?: Desk[];
+    description?: string;
+};
