@@ -13,7 +13,7 @@ function EmployeesService({children}:Props) {
         employees,
         addEmployee,
         removeEmployee,
-        editEmployee
+        editEmployee,
     }
 
     function addEmployee(newEmployee:EmployeeData) {
