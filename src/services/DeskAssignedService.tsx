@@ -1,6 +1,4 @@
 import {useState, useContext} from 'react';
-import EmployeesService from './EmployeesService';
-import DesksService from './DesksService';
 import { EmployeesContent, EmployeesContext } from '../contexts/EmployeesContext';
 import { DesksContent, DesksContext } from '../contexts/DesksContext';
 import { DeskAssigned } from '../models/DeskAssigned';
@@ -17,10 +15,13 @@ function DeskAssignedService({children}: Props) {
     const {desks} = useContext<DesksContent>(DesksContext);
 
     const [desksAssigned, setDesksAssigned] = useState<DeskAssigned[]>([]);
+    let desksAssignedTempTable: DeskAssigned[] = [];
 
     const value: DesksAssignedContent = {
         desksAssigned,
         assignAllDesks,
+        unassignAllDesks,
+        getEmployeeAssigned,
     }
 
     type DeskConflictual = {
@@ -28,26 +29,41 @@ function DeskAssignedService({children}: Props) {
         employees: Employee[],
     }
 
+    function getEmployeeAssigned(deskId: string) {
+        let deskAssigned = desksAssigned.find((deskAssigned) => deskAssigned.deskId === deskId);
+        
+        if(!deskAssigned)
+            return undefined;
+
+        return employees.find((employee) => employee.id === deskAssigned.employeeId);
+    }
+
     function unassignAllDesks() {
+        desksAssignedTempTable=[];
         setDesksAssigned([]);
     }
 
     function getUnassignedDesks(): Desk[] {
-        return desks.filter((desk) => !desksAssigned.some((deskAssigned) => desk.id === deskAssigned.deskId));
+        //return desks.filter((desk) => !desksAssigned.some((deskAssigned) => desk.id === deskAssigned.deskId));
+        return desks.filter((desk) => !desksAssignedTempTable.some((deskAssigned) => desk.id === deskAssigned.deskId));
     }
 
     function getUnassignedEmployees(): Employee[] {
-        return employees.filter((employee) => !desksAssigned.some((deskAssigned) => employee.id === deskAssigned.employeeId));
+        //return employees.filter((employee) => !desksAssigned.some((deskAssigned) => employee.id === deskAssigned.employeeId));
+        return employees.filter((employee) => !desksAssignedTempTable.some((deskAssigned) => employee.id === deskAssigned.employeeId));
     }
 
     function assignAllDesks(): Employee[] {
         let deskToAssign: Desk[] = getUnassignedDesks();
         let employeeWithoutDesk: Employee[] = getUnassignedEmployees();
         
-        let employeeWithNoAnyPref = assignDeskByPref(deskToAssign, employeeWithoutDesk);
-        deskToAssign = desks.filter((desk) => !desksAssigned.some((deskAssigned) => desk.id === deskAssigned.deskId));
+        employeeWithoutDesk = assignDeskByPref(deskToAssign, employeeWithoutDesk);
+        deskToAssign = getUnassignedDesks();
 
-        return assignRandomly(deskToAssign, employeeWithNoAnyPref);
+        const employeesUnassigned = assignRandomly(deskToAssign, employeeWithoutDesk);
+        setDesksAssigned(desksAssignedTempTable);
+
+        return employeesUnassigned;
     }
 
     function assignDeskByPref(deskToAssign: Desk[], employeeWithoutDesk: Employee[], currentPrefIndex: number = 0): Employee[] {
@@ -55,6 +71,7 @@ function DeskAssignedService({children}: Props) {
         let deskConfitual: DeskConflictual[] = [];
 
         let employeeWithNoAnyPref: Employee[] = employeeWithoutDesk.filter((employee) => employee.listDesk.length <= currentPrefIndex);
+        employeeWithoutDesk = employeeWithoutDesk.filter((employee) => employee.listDesk.length > currentPrefIndex);
 
         deskToAssign.forEach(desk => {
             let employeeExpectedThis: Employee[] = employeeWithoutDesk.filter((employee) => employee.listDesk[currentPrefIndex].id === desk.id);
@@ -80,10 +97,15 @@ function DeskAssignedService({children}: Props) {
             employeeWithoutDesk.splice(index, 1);
         });
 
-        if(employeeWithoutDesk.length > 0 && deskFree.length > 0) {
-            employeeWithNoAnyPref = [...employeeWithNoAnyPref, ...assignDeskByPref(deskFree, employeeWithoutDesk, ++currentPrefIndex)];
+        if(deskFree.length > 0) {
+            return [...employeeWithNoAnyPref, ...employeeWithoutDesk];
         }
 
+        if(employeeWithoutDesk.length > 0) {
+            employeeWithNoAnyPref = [...employeeWithNoAnyPref, ...assignDeskByPref(deskFree, employeeWithoutDesk, currentPrefIndex+1)];
+        }
+
+        console.log(employeeWithNoAnyPref.map((employee)=> employee.name).join(', '));
         return employeeWithNoAnyPref;
     }
 
@@ -107,10 +129,12 @@ function DeskAssignedService({children}: Props) {
     }
 
     function assignDesk(deskId: string, employeeId: string) {
-        if(desksAssigned.findIndex((desk) => desk.deskId === deskId)) {
-            setDesksAssigned(desksAssigned.map((desk) => desk.deskId !== deskId ? desk : {deskId, employeeId}));
+        if(desksAssignedTempTable.findIndex((desk) => desk.deskId === deskId) != -1) {
+            //setDesksAssigned(desksAssigned.map((desk) => desk.deskId !== deskId ? desk : {deskId, employeeId}));
+            desksAssignedTempTable = desksAssignedTempTable.map((desk) => desk.deskId !== deskId ? desk : {deskId, employeeId});
         } else {
-            setDesksAssigned([...desksAssigned, {deskId, employeeId}]);
+            //setDesksAssigned([...desksAssigned, {deskId, employeeId}]);
+            desksAssignedTempTable = [...desksAssignedTempTable, {deskId, employeeId}];
         }
     }
 
@@ -120,3 +144,5 @@ function DeskAssignedService({children}: Props) {
         <DesksAssignedContext.Provider value={value}>{children}</DesksAssignedContext.Provider>
     );
 }
+
+export default DeskAssignedService;

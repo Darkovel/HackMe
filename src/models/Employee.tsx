@@ -4,13 +4,13 @@ export type Employee = {
     id: string;
     name: string;
     email: string;
-    listDesk?: Desk[];
+    listDesk: Desk[];
     description?: string;
 };
 
 export type EmployeeData = {
     name: string;
     email: string;
-    listDesk?: Desk[];
+    listDesk: Desk[];
     description?: string;
 };

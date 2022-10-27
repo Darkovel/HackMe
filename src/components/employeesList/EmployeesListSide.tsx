@@ -8,7 +8,8 @@ function EmployeesListSide() {
   let context = useContext<EmployeesContent>(EmployeesContext);
   let [employee, setEmployee] = useState<EmployeeData>({
     name: "",
-    email: ""
+    email: "",
+    listDesk: [],
   });
 
   function onChange(name:string, value:string) {
