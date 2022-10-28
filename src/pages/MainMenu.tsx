@@ -9,7 +9,10 @@ function MainMenu() {
             <div className="flex">
                     <EmployeesListSide />
                 <div className="block w-full h-full">
-                    <DesksListTop />
+                    <div className="hidden sm:block">
+                        <DesksListTop />
+                    </div>
+                    
                     <DeskAssignedService>
                         <DesksAssignedMenu />
                     </DeskAssignedService>

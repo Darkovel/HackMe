@@ -1,0 +1,1 @@
+export const IconAddElement = (<div className="inline-block justify-self-center w-12 h-12 sm:w-24 sm:h-24 rounded-full bg-white border-black border-2 border-dashed text-2xl sm:text-5xl">+</div>)

@@ -1,9 +1,11 @@
 import { useContext} from "react";
 import { DesksAssignedContext } from "../../contexts/DesksAssignedContext";
 import { DesksContext, DesksContent } from "../../contexts/DesksContext";
-import {Desk} from "../../models/Desk";
 import DeskAssigned from "./DeskAssigned";
 import {Employee} from "../../models/Employee";
+import Popup from "../popups/Popup";
+import AddDeskPopup from "../popups/DeskPopups.tsx/AddDeskPopup";
+import { IconAddElement } from "../icons/IconAddElement";
 
 function DesksAssignedMenu() {
     let deskContext = useContext<DesksContent>(DesksContext);
@@ -23,15 +25,20 @@ function DesksAssignedMenu() {
     return (
         <div className="border-2 bg-orange-200 w-full h-full">
             <h3 className="text-center font-bold">Desks Assigned</h3>
-            <ul className="grid grid-flow-row-dense grid-flow-rows grid-cols-4 gap-4">
+            <ul className="grid grid-flow-row-dense grid-flow-rows grid-cols-2 sm:grid-cols-4 gap-4">
                 {deskContext.desks.map(desk => (
                     <DeskAssigned
                     key={desk.id}
                     desk={desk} />
                 ))}
+                <AddDeskPopup>
+                    {IconAddElement}
+                </AddDeskPopup>
             </ul>
-            <button className="btn btn-primary" onClick={(evt) => handleAssignAllDesk(evt)}>Assign all desks</button>
-            <button className="btn btn-primary" onClick={(evt) => handleUnassignAllDesk(evt)}>Unassign all desks</button>
+            <div className="flex align-end gap-2">
+                <button className="btn btn-primary" onClick={(evt) => handleAssignAllDesk(evt)}>Assign all desks</button>
+                <button className="btn btn-primary" onClick={(evt) => handleUnassignAllDesk(evt)}>Unassign all desks</button>
+            </div>
         </div>
     )
 }
