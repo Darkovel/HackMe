@@ -1,5 +1,5 @@
-import { FaceIcon, PlusCircledIcon, PlusIcon } from "@radix-ui/react-icons";
-import React, { FormEvent, useContext, useState } from "react";
+import { PlusCircledIcon } from "@radix-ui/react-icons";
+import {useContext } from "react";
 import {EmployeesContext, EmployeesContent} from "../../contexts/EmployeesContext";
 import AddEmployeePopup from "../popups/EmployeePopup.tsx/AddEmployeePopup";
 import EmployeeListElement from "./EmployeeListElement";
@@ -20,7 +20,6 @@ return (
       <AddEmployeePopup>
         <PlusCircledIcon className="w-6 h-6"/>
       </AddEmployeePopup>
-      
     </div>
     
     

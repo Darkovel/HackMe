@@ -23,9 +23,20 @@ function DesksService({children}: Props) {
 ]);
     const value: DesksContent = {
         desks,
+        getDesk,
         addDesk,
         removeDesk,
         editDesk,
+    }
+
+    function getDesk(id:string) {
+        let deskData:DeskData = {name:'', description: ''};
+
+        if(desks.some((desk) => desk.id === id)) {
+            deskData = desks.find((desk) => desk.id === id);
+        }
+        
+        return deskData;
     }
 
     function addDesk(newDesk: DeskData) {

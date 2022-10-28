@@ -1,15 +1,16 @@
 import {useState, useContext, ChangeEvent, FormEvent, ReactElement} from 'react';
-import { DesksContent, DesksContext} from '../../../contexts/DesksContext';
+import { DesksContext} from '../../../contexts/DesksContext';
 import { EmployeesContent, EmployeesContext } from '../../../contexts/EmployeesContext';
-import { Desk, DeskData } from '../../../models/Desk';
+import { Desk } from '../../../models/Desk';
 import { EmployeeData } from '../../../models/Employee';
 import DropBoxMultiSelect from '../../dropBox/listMultiSelect/DropBoxMultiSelect';
 
 interface Props {
     children: ReactElement;
 }
+
 function AddEmployeePopup({children}: Props) {
-    let context = useContext<EmployeesContent>(EmployeesContext);
+    let {addEmployee} = useContext<EmployeesContent>(EmployeesContext);
     const {desks} = useContext(DesksContext);
     const [employee, setEmployee] = useState<EmployeeData>({
         name: "",
@@ -20,7 +21,6 @@ function AddEmployeePopup({children}: Props) {
     const [states, setStates] = useState<string[]>([]);
 
     function onChange(name:string, value:string) {
-        console.log(name + ' - ' + value);
         setEmployee({...employee, [name]: value});
     }
 
@@ -35,7 +35,7 @@ function AddEmployeePopup({children}: Props) {
         if(employee.name === "")
         return;
 
-        context.addEmployee(employee);
+        addEmployee(employee);
 
         setStates([]);
         setEmployee({name:'', email: '', listDesk:[], description:''});
@@ -55,21 +55,7 @@ function AddEmployeePopup({children}: Props) {
     function handleHide() {
         setShowPopup(false);
     }
-
-    <div className="border-2 border-red-500 w-full">
-      <form >
-        <div className="form-group">
-          <label htmlFor="name">Nom</label>
-          <input type="text" name="name" id="name" className="form-control" value={employee.name || ''} onChange={(e) => handleChange(e)}></input>
-        </div>
-        <div className="form-group">
-          
-        </div>
-        
-        <button className="btn btn-primary">Ajouter Employé</button>
-      </form>
-    </div>
-
+    
     const popupContainer = showPopup ? (
         <div className="flex fixed z-[995] bg-gray-200/50 inset-0 items-center justify-center ">
             <div className="fixed w-auto h-auto bg-gray-400 z-[999] p-5 rounded-lg shadow-md">

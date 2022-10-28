@@ -9,6 +9,7 @@ function AddDeskPopup({children}: Props) {
     let context = useContext<DesksContent>(DesksContext);
     let [desk, setDesk] = useState<DeskData>({
         name:'',
+        description:'',
     }) 
     const [showPopup, setShowPopup] = useState<Boolean>(false);
 
@@ -19,7 +20,6 @@ function AddDeskPopup({children}: Props) {
     function handleHide() {
         setShowPopup(false);
     }
-
 
     const popupContainer = showPopup ? (
         <div className="flex fixed z-[995] bg-gray-200/50 inset-0 items-center justify-center ">
@@ -44,7 +44,7 @@ function AddDeskPopup({children}: Props) {
     function handleSubmit(evt: FormEvent<HTMLFormElement>) {
         evt.preventDefault();
         context.addDesk(desk);
-        setDesk({name: ''});
+        setDesk({name: '', description:''});
         handleHide();
     }
 
