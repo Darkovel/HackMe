@@ -24,7 +24,6 @@ function EditEmployeePopup({children, employeeId}:Props) {
 
     function handleShow() {
         const employeeData = getEmployee(employeeId);
-        console.log();
         setEmployee(employeeData);
         setStates(employeeData.listDesk.map((desk) => desk.id));
         setShowPopup(true);

@@ -43,6 +43,7 @@ function EditDeskPopup({children, deskId}: Props) {
     }
 
     function handleRemoveDesk() {
+        unassignADesk(deskId);
         removeDesk(deskId);
         handleHide();
     }
@@ -54,6 +55,7 @@ function EditDeskPopup({children, deskId}: Props) {
             assignADesk(deskId, e.target.value);
     }
 
+
     const popupContainer = showPopup ? (
         <div className="flex fixed z-[995] bg-gray-200/50 inset-0 items-center justify-center ">
             <div className="fixed w-auto h-auto bg-gray-400 z-[999] p-5 rounded-lg shadow-md">
@@ -62,7 +64,7 @@ function EditDeskPopup({children, deskId}: Props) {
                 <form className="flex flex-col space-y-2 justify-center" onSubmit={(evt) => handleSubmit(evt)}>
                     <label className='select-none' htmlFor="name">Name</label>
                     <input type="text" name="name" id="name" className="form-control" value={desk.name} onChange={(evt) => handleChange(evt)}></input>
-                    <label className='select-none'>Assigned to :</label>
+                    
                     <p>{getEmployeeAssigned(deskId) === undefined ? 'Unassigned': 'Assigned to : ' + getEmployeeAssigned(deskId).name}</p>
                     <select name='' id='' onChange={(e) => handleAssign(e)}>
                         <option key='default' value='none'>assign to...</option>

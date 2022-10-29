@@ -13,8 +13,8 @@ interface Props {
 function DeskAssignedService({children}: Props) {
     const {employees} = useContext<EmployeesContent>(EmployeesContext);
     const {desks} = useContext<DesksContent>(DesksContext);
-
     const [desksAssigned, setDesksAssigned] = useState<DeskAssigned[]>([]);
+
     let desksAssignedTempTable: DeskAssigned[] = [];
 
     const value: DesksAssignedContent = {
@@ -83,6 +83,7 @@ function DeskAssignedService({children}: Props) {
     }
 
     function assignAllDesks(): Employee[] {
+        desksAssignedTempTable = desksAssigned;
         let deskToAssign: Desk[] = getUnassignedDesks();
         let employeeWithoutDesk: Employee[] = getUnassignedEmployees();
         
@@ -134,7 +135,6 @@ function DeskAssignedService({children}: Props) {
             employeeWithNoAnyPref = [...employeeWithNoAnyPref, ...assignDeskByPref(deskFree, employeeWithoutDesk, currentPrefIndex+1)];
         }
 
-        console.log(employeeWithNoAnyPref.map((employee)=> employee.name).join(', '));
         return employeeWithNoAnyPref;
     }
 
