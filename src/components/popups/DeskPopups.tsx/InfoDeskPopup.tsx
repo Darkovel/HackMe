@@ -28,12 +28,10 @@ function InfoDeskPopup({children, deskId}: Props) {
                 <div className='flex h-1 bg-gray-200 w-2/3 rounded-lg m-auto my-2'></div>
                 <div className="flex flex-col space-y-2 justify-center">
                     <div>
-                        <p>Assigned to :</p>
-                        <p>{getEmployeeAssigned(deskId) === undefined ? 'unassigned': getEmployeeAssigned(deskId).name}</p>
+                        <p>{getEmployeeAssigned(deskId) === undefined ? 'Unassigned': 'Assigned to : ' + getEmployeeAssigned(deskId).name}</p>
                     </div>
                     <div>
-                        <p>Description :</p>
-                        <p>{getDesk(deskId).description}</p>
+                        <p className='italic'>{getDesk(deskId).description}</p>
                     </div>
                 </div>
             </div>

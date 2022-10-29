@@ -1,5 +1,5 @@
 import {v4 as uuidv4} from 'uuid';
-import { createContext, useState } from "react";
+import { useState } from "react";
 import {Employee, EmployeeData} from '../models/Employee';
 import {EmployeesContext, EmployeesContent} from '../contexts/EmployeesContext';
 
@@ -42,9 +42,21 @@ function EmployeesService({children}:Props) {
     ]);
     let value: EmployeesContent = {
         employees,
+        getEmployee,
         addEmployee,
         removeEmployee,
         editEmployee,
+        removeDeskInPrefs,
+    }
+
+    function getEmployee(id: string) {
+        let employeeData: EmployeeData = {name:'', email:'', listDesk:[], description: ''};
+
+        if(employees.some((employee) => employee.id === id)) {
+            employeeData = employees.find((employee) => employee.id === id);
+        }
+        
+        return employeeData;
     }
 
     function addEmployee(newEmployee:EmployeeData) {
@@ -61,6 +73,10 @@ function EmployeesService({children}:Props) {
 
     function editEmployee(data:Employee) {
         setEmployees(employees.map((employee) => employee.id !== data.id ? employee : data));
+    }
+
+    function removeDeskInPrefs(deskId: string) {
+        setEmployees(employees.map((employee) => {return {...employee, listDesk:employee.listDesk.filter((desk) => desk.id !== deskId)}}));
     }
 
     return (

@@ -3,7 +3,6 @@ import { DesksAssignedContext } from "../../contexts/DesksAssignedContext";
 import { DesksContext, DesksContent } from "../../contexts/DesksContext";
 import DeskAssigned from "./DeskAssigned";
 import {Employee} from "../../models/Employee";
-import Popup from "../popups/Popup";
 import AddDeskPopup from "../popups/DeskPopups.tsx/AddDeskPopup";
 import { IconAddElement } from "../icons/IconAddElement";
 

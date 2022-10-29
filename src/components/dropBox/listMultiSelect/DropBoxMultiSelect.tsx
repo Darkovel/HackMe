@@ -24,6 +24,7 @@ function DropBoxMultiSelect({options, states, setStates}: Props) {
         <div>
             <p>{options.filter((option) => states.some((state) => state === option.id)).map((option) => option.name).join(', ')}</p>
             <select onChange={(e) => handleChange(e)}>
+                {<DropBoxMultiSelectItem key='none' value=''> </DropBoxMultiSelectItem>}
                 {options.map((option) => (<DropBoxMultiSelectItem key={option.id} value={option.id}>{option.name}</DropBoxMultiSelectItem>))}
             </select>
         </div>

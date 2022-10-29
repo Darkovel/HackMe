@@ -19,9 +19,12 @@ function DeskAssignedService({children}: Props) {
 
     const value: DesksAssignedContent = {
         desksAssigned,
+        assignADesk,
         assignAllDesks,
+        unassignADesk,
         unassignAllDesks,
         getEmployeeAssigned,
+        getUnassignedEmployees,
     }
 
     type DeskConflictual = {
@@ -29,13 +32,18 @@ function DeskAssignedService({children}: Props) {
         employees: Employee[],
     }
 
-    function getEmployeeAssigned(deskId: string) {
+    function assignADesk(deskId: string, employeeId: string) {
         let deskAssigned = desksAssigned.find((deskAssigned) => deskAssigned.deskId === deskId);
-        
-        if(!deskAssigned)
-            return undefined;
+        if(deskAssigned && deskAssigned.employeeId===employeeId)
+            return;
 
-        return employees.find((employee) => employee.id === deskAssigned.employeeId);
+        unassignEmployee(employeeId);
+
+        if(deskAssigned) {
+            setDesksAssigned(desksAssigned.map((deskAssigned) => deskAssigned.deskId !== deskId ? deskAssigned : {deskId, employeeId}));
+        } else {
+            setDesksAssigned([...desksAssigned, {deskId, employeeId}]);
+        }
     }
 
     function unassignAllDesks() {
@@ -43,14 +51,35 @@ function DeskAssignedService({children}: Props) {
         setDesksAssigned([]);
     }
 
+    function unassignADesk(deskId: string) {
+        setDesksAssigned(desksAssigned.filter((deskAssigned) => deskAssigned.deskId !== deskId));
+    }
+
+    function unassignEmployee(employeeId:string) {
+        setDesksAssigned(desksAssigned.filter((deskAssigned) => deskAssigned.employeeId !== employeeId));
+    }
+
+    function getEmployeeAssigned(deskId: string) {
+        const deskAssigned = desksAssigned.find((deskAssigned) => deskAssigned.deskId === deskId);
+        
+        if(!deskAssigned)
+            return undefined;
+
+        const employeeAssigned = employees.find((employee) => employee.id === deskAssigned.employeeId)
+        if(!employeeAssigned) {
+            unassignADesk(deskId);
+            return undefined;
+        }
+            
+        return employeeAssigned;
+    }
+
     function getUnassignedDesks(): Desk[] {
-        //return desks.filter((desk) => !desksAssigned.some((deskAssigned) => desk.id === deskAssigned.deskId));
-        return desks.filter((desk) => !desksAssignedTempTable.some((deskAssigned) => desk.id === deskAssigned.deskId));
+        return desks.filter((desk) => !desksAssigned.some((deskAssigned) => desk.id === deskAssigned.deskId));
     }
 
     function getUnassignedEmployees(): Employee[] {
-        //return employees.filter((employee) => !desksAssigned.some((deskAssigned) => employee.id === deskAssigned.employeeId));
-        return employees.filter((employee) => !desksAssignedTempTable.some((deskAssigned) => employee.id === deskAssigned.employeeId));
+        return employees.filter((employee) => !desksAssigned.some((deskAssigned) => employee.id === deskAssigned.employeeId));
     }
 
     function assignAllDesks(): Employee[] {
@@ -58,7 +87,7 @@ function DeskAssignedService({children}: Props) {
         let employeeWithoutDesk: Employee[] = getUnassignedEmployees();
         
         employeeWithoutDesk = assignDeskByPref(deskToAssign, employeeWithoutDesk);
-        deskToAssign = getUnassignedDesks();
+        deskToAssign = desks.filter((desk) => !desksAssignedTempTable.some((deskAssigned) => desk.id === deskAssigned.deskId));
 
         const employeesUnassigned = assignRandomly(deskToAssign, employeeWithoutDesk);
         setDesksAssigned(desksAssignedTempTable);
@@ -130,10 +159,8 @@ function DeskAssignedService({children}: Props) {
 
     function assignDesk(deskId: string, employeeId: string) {
         if(desksAssignedTempTable.findIndex((desk) => desk.deskId === deskId) != -1) {
-            //setDesksAssigned(desksAssigned.map((desk) => desk.deskId !== deskId ? desk : {deskId, employeeId}));
             desksAssignedTempTable = desksAssignedTempTable.map((desk) => desk.deskId !== deskId ? desk : {deskId, employeeId});
         } else {
-            //setDesksAssigned([...desksAssigned, {deskId, employeeId}]);
             desksAssignedTempTable = [...desksAssignedTempTable, {deskId, employeeId}];
         }
     }
