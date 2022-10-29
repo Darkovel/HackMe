@@ -9,7 +9,7 @@ function EmployeesListSide() {
   
   
 return (
-  <div className="bg-blue-200 w-1/3 max-w-sm h-screen">
+  <div className="bg-blue-200 w-1/3 max-w-sm inset-y-0 z-0">
     <h3 className="text-center font-bold text-xl sm:text-2xl">Employees</h3>
     <div className="pl-2 sm:pl-5">
       {context?.employees.map(employee => (
@@ -18,7 +18,7 @@ return (
         employee={employee} />
       ))}
       <AddEmployeePopup>
-        <PlusCircledIcon className="w-6 h-6"/>
+        <PlusCircledIcon className="w-6 h-6 ml-2"/>
       </AddEmployeePopup>
     </div>
     

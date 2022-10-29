@@ -1,5 +1,5 @@
 import {v4 as uuidv4} from 'uuid';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {Employee, EmployeeData} from '../models/Employee';
 import {EmployeesContext, EmployeesContent} from '../contexts/EmployeesContext';
 
@@ -40,6 +40,20 @@ function EmployeesService({children}:Props) {
             listDesk:[]
         },
     ]);
+    
+    const key = "semana-employees";
+    useEffect(() => {
+        const employeesRetrievedFromStorage = localStorage.getItem(key);
+
+        if(employeesRetrievedFromStorage) {
+        setEmployees(JSON.parse(employeesRetrievedFromStorage));
+        }
+    },[]);
+
+    useEffect(() => {
+        localStorage.setItem(key, JSON.stringify(employees));
+    }, [employees]);
+
     let value: EmployeesContent = {
         employees,
         getEmployee,

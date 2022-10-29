@@ -1,4 +1,4 @@
-import {useState, useContext} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import { EmployeesContent, EmployeesContext } from '../contexts/EmployeesContext';
 import { DesksContent, DesksContext } from '../contexts/DesksContext';
 import { DeskAssigned } from '../models/DeskAssigned';
@@ -14,6 +14,19 @@ function DeskAssignedService({children}: Props) {
     const {employees} = useContext<EmployeesContent>(EmployeesContext);
     const {desks} = useContext<DesksContent>(DesksContext);
     const [desksAssigned, setDesksAssigned] = useState<DeskAssigned[]>([]);
+
+    const key = "semana-desksAssigned";
+    useEffect(() => {
+        const desksAssignedRetrievedFromStorage = localStorage.getItem(key);
+
+        if(desksAssignedRetrievedFromStorage) {
+        setDesksAssigned(JSON.parse(desksAssignedRetrievedFromStorage));
+        }
+    },[]);
+
+    useEffect(() => {
+        localStorage.setItem(key, JSON.stringify(desksAssigned));
+    }, [desksAssigned]);
 
     let desksAssignedTempTable: DeskAssigned[] = [];
 

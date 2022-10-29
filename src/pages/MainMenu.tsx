@@ -5,7 +5,7 @@ import DeskAssignedService from "../services/DeskAssignedService";
 
 function MainMenu() {
     return (
-        <div className="border-2 border-green-500">
+        <div className="">
             <div className="flex">
                     <EmployeesListSide />
                 <div className="block w-full h-full">

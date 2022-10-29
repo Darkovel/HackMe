@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {DesksContent, DesksContext} from '../contexts/DesksContext';
 import {Desk, DeskData} from '../models/Desk';
 import {v4 as uuidv4} from 'uuid';
@@ -21,6 +21,20 @@ function DesksService({children}: Props) {
         name: "desk-3",
     },
 ]);
+
+const key = "semana-desks";
+useEffect(() => {
+    const desksRetrievedFromStorage = localStorage.getItem(key);
+
+    if(desksRetrievedFromStorage) {
+      setDesks(JSON.parse(desksRetrievedFromStorage));
+    }
+},[]);
+
+useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(desks));
+}, [desks]);
+
     const value: DesksContent = {
         desks,
         getDesk,
