@@ -1,18 +1,13 @@
 import DesksAssignedMenu from "../components/desksAssigned/DesksAssignedMenu";
-import DesksListTop from "../components/desksList/DesksListTop";
 import EmployeesListSide from "../components/employeesList/EmployeesListSide";
 import DeskAssignedService from "../services/DeskAssignedService";
 
 function MainMenu() {
     return (
-        <div className="">
-            <div className="flex">
+        <div className="w-screen h-screen">
+            <div className="flex h-full">
                     <EmployeesListSide />
                 <div className="block w-full h-full">
-                    <div className="hidden sm:block">
-                        <DesksListTop />
-                    </div>
-                    
                     <DeskAssignedService>
                         <DesksAssignedMenu />
                     </DeskAssignedService>

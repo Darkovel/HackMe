@@ -22,8 +22,8 @@ function DesksAssignedMenu() {
     }
 
     return (
-        <div className="border-2 bg-orange-200 w-full h-full">
-            <h3 className="text-center font-bold">Desks Assigned</h3>
+        <div className="overflow-y-auto border-2 bg-orange-200 h-full pt-12">
+            <h3 className="text-center font-bold mb-4 sm:mb-8">Desks Assigned</h3>
             <ul className="grid grid-flow-row-dense grid-flow-rows grid-cols-2 sm:grid-cols-4 gap-4">
                 {deskContext.desks.map(desk => (
                     <DeskAssigned
@@ -34,9 +34,9 @@ function DesksAssignedMenu() {
                     {IconAddElement}
                 </AddDeskPopup>
             </ul>
-            <div className="flex align-end gap-2">
-                <button className="btn btn-primary" onClick={(evt) => handleAssignAllDesk(evt)}>Assign all desks</button>
+            <div className="flex flex-row-reverse align-end gap-2">
                 <button className="btn btn-primary" onClick={(evt) => handleUnassignAllDesk(evt)}>Unassign all desks</button>
+                <button className="btn btn-primary" onClick={(evt) => handleAssignAllDesk(evt)}>Assign all desks</button>
             </div>
         </div>
     )

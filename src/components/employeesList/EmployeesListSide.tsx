@@ -9,7 +9,7 @@ function EmployeesListSide() {
   
   
 return (
-  <div className="bg-blue-200 w-1/3 max-w-sm inset-y-0 z-0">
+  <div className="bg-blue-200 w-2/5 max-w-sm inset-y-0 z-0 py-12">
     <h3 className="text-center font-bold text-xl sm:text-2xl">Employees</h3>
     <div className="pl-2 sm:pl-5">
       {context?.employees.map(employee => (

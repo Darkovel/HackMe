@@ -1,5 +1,5 @@
 import {useContext} from 'react'
-import { AvatarIcon, Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
+import { AvatarIcon, TrashIcon } from "@radix-ui/react-icons";
 import {Employee} from "../../models/Employee";
 import EditEmployeePopup from "../popups/EmployeePopup.tsx/EditEmployeePopup";
 import { EmployeesContext } from '../../contexts/EmployeesContext';
