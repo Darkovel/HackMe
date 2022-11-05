@@ -1,17 +1,13 @@
 import {useState, useContext, ChangeEvent, FormEvent, ReactElement} from 'react';
-import { DesksAssignedContext } from '../../../contexts/DesksAssignedContext';
-import { DesksContent, DesksContext} from '../../../contexts/DesksContext';
-import { EmployeesContext } from '../../../contexts/EmployeesContext';
-import { DeskData } from '../../../models/Desk';
+import { Desk, DeskData } from '../../../../models/entities/Desk';
+import { useOffice } from '../../../providers/OfficeProvider';
 
 interface Props {
     children: ReactElement;
     deskId: string;
 }
 function EditDeskPopup({children, deskId}: Props) {
-    const {getDesk, editDesk, removeDesk} = useContext<DesksContent>(DesksContext);
-    const {getEmployeeAssigned, getUnassignedEmployees, assignADesk, unassignADesk} = useContext(DesksAssignedContext);
-    const {employees} = useContext(EmployeesContext);
+    const office = useOffice();
     const [desk, setDesk] = useState<DeskData>({
         name:'',
         description:'',
@@ -19,7 +15,7 @@ function EditDeskPopup({children, deskId}: Props) {
     const [showPopup, setShowPopup] = useState<Boolean>(false);
 
     function handleShow() {
-        setDesk(getDesk(deskId));
+        setDesk(office.getDesk(deskId));
         setShowPopup(true);
     }
       
@@ -38,24 +34,25 @@ function EditDeskPopup({children, deskId}: Props) {
     function handleSubmit(evt: FormEvent<HTMLFormElement>) {
         evt.preventDefault();
         
-        editDesk({id:deskId, ...desk});
+        office.editDesk(deskId, desk);
         handleHide();
     }
 
     function handleRemoveDesk() {
-        unassignADesk(deskId);
-        removeDesk(deskId);
+        office.deleteDesk(deskId);
         handleHide();
     }
 
     function handleAssign(e:ChangeEvent<HTMLSelectElement>) {
         if(e.target.value === 'none')
-            unassignADesk(deskId);
+            office.unassignADesk(deskId);
         else
-            assignADesk(deskId, e.target.value);
+            office.assignDesk(deskId, e.target.value);
     }
 
 
+    const employeeAssigned = office.getEmployeeAssigned(deskId);
+    const employeesUnassigned = office.getEmployeesUnassigned();
     const popupContainer = showPopup ? (
         <div className="flex fixed z-[995] bg-gray-200/50 inset-0 items-center justify-center ">
             <div className="fixed w-auto h-auto bg-gray-400 z-[999] p-5 rounded-lg shadow-md">
@@ -65,11 +62,11 @@ function EditDeskPopup({children, deskId}: Props) {
                     <label className='select-none' htmlFor="name">Name</label>
                     <input type="text" name="name" id="name" className="form-control" value={desk.name} onChange={(evt) => handleChange(evt)}></input>
                     
-                    <p>{getEmployeeAssigned(deskId) === undefined ? 'Unassigned': 'Assigned to : ' + getEmployeeAssigned(deskId).name}</p>
+                    <p>{employeeAssigned === undefined ? 'Unassigned': 'Assigned to : ' + employeeAssigned.name}</p>
                     <select name='' id='' onChange={(e) => handleAssign(e)}>
                         <option key='default' value='none'>assign to...</option>
                         <option key='none' value='none'> </option>
-                        {getUnassignedEmployees().map((employee) => (<option key={employee.id} value={employee.id}>{employee.name}</option>))}
+                        {employeesUnassigned.map((employee) => (<option key={employee.id} value={employee.id}>{employee.name}</option>))}
                     </select>
                     <label className='select-none' htmlFor='description'>Description : </label>
                     <textarea name="description" id="description" className="text-area" value={desk.description} onChange={(evt) => handleChange(evt)}></textarea>

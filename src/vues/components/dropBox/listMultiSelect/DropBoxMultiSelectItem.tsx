@@ -1,5 +1,3 @@
-import { CheckIcon } from "@radix-ui/react-icons";
-
 interface Props {
     value: string,
     children: string,

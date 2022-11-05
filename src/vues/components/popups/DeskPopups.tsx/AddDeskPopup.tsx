@@ -1,12 +1,12 @@
-import {useState, useContext, ChangeEvent, FormEvent, ReactElement} from 'react';
-import { DesksContent, DesksContext} from '../../../contexts/DesksContext';
-import { DeskData } from '../../../models/Desk';
+import {useState, FormEvent, ReactElement} from 'react';
+import { DeskData } from '../../../../models/entities/Desk';
+import { useOffice } from '../../../providers/OfficeProvider';
 
 interface Props {
     children: ReactElement;
 }
 function AddDeskPopup({children}: Props) {
-    let context = useContext<DesksContent>(DesksContext);
+    const office = useOffice();
     let [desk, setDesk] = useState<DeskData>({
         name:'',
         description:'',
@@ -34,7 +34,7 @@ function AddDeskPopup({children}: Props) {
         if(desk.name === "")
             return;
             
-        context.addDesk(desk);
+        office.addDesk(desk);
         setDesk({name: '', description:''});
         handleHide();
     }

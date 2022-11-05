@@ -1,31 +1,32 @@
-import { useContext} from "react";
-import { DesksAssignedContext } from "../../contexts/DesksAssignedContext";
-import { DesksContext, DesksContent } from "../../contexts/DesksContext";
 import DeskAssigned from "./DeskAssigned";
-import {Employee} from "../../models/Employee";
-import AddDeskPopup from "../popups/DeskPopups.tsx/AddDeskPopup";
-import { IconAddElement } from "../icons/IconAddElement";
-
+import {Employee} from "../../../models/entities/Employee";
+import AddDeskPopup from "../../components/popups/DeskPopups.tsx/AddDeskPopup";
+import { IconAddElement } from "../../components/icons/IconAddElement";
+import { useObservable, useOffice } from "../../providers/OfficeProvider";
+import { Desk } from "../../../models/entities/Desk";
 function DesksAssignedMenu() {
-    let deskContext = useContext<DesksContent>(DesksContext);
-    let {assignAllDesks, unassignAllDesks} = useContext(DesksAssignedContext);
+    const office = useOffice();
+    
+    const desks = useObservable<Desk[]>(office.desksChanged, office.desks);
+
 
     function handleAssignAllDesk(evt) {
         evt.preventDefault();
-        const employeesUnassigned: Employee[] = assignAllDesks();
+        office.assignAllDesk();
+        const employeesUnassigned: Employee[] = office.getEmployeesUnassigned();
         window.alert(employeesUnassigned.map((employee)=> employee.name).join(', '));
     }
 
     function handleUnassignAllDesk(evt) {
         evt.preventDefault();
-        unassignAllDesks();
+        office.unassignAllDesk();
     }
 
     return (
-        <div className="overflow-y-auto border-2 bg-orange-200 h-full pt-12">
+        <div className="overflow-y-auto border-2 bg-orange-200 h-full w-full pt-12">
             <h3 className="text-center font-bold mb-4 sm:mb-8">Desks Assigned</h3>
             <ul className="grid grid-flow-row-dense grid-flow-rows grid-cols-2 sm:grid-cols-4 gap-4">
-                {deskContext.desks.map(desk => (
+                {desks.map(desk => (
                     <DeskAssigned
                     key={desk.id}
                     desk={desk} />

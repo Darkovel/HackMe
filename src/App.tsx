@@ -1,19 +1,13 @@
-import React from 'react';
+
 import './App.css';
-import MenuHeader from './components/MenuHeader';
-import MainMenu from './pages/MainMenu';
-import DesksService from './services/DesksService';
-import EmployeesService from './services/EmployeesService';
+import MenuHeader from './vues/components/MenuHeader';
+import { MainMenu } from './vues/pages/MainMenu';
 
 function App() {
   return (
     <>
       <MenuHeader />
-      <DesksService>
-        <EmployeesService>
-          <MainMenu />
-        </EmployeesService>
-      </DesksService>
+        <MainMenu />
     </>
   );
 }
