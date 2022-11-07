@@ -5,6 +5,7 @@ interface Props {
     children: ReactElement;
     popup: ReactElement;
 }
+
 function Popup({children, popup}: Props) {
     const [showPopup, setShowPopup] = useState<Boolean>(false);
 

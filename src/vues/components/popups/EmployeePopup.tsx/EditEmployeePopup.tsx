@@ -13,18 +13,15 @@ function EditEmployeePopup({children, employeeId}:Props) {
     const office = useOffice();
     const desks = office.desks;
     const [employee, setEmployee] = useState<EmployeeData>({
-        name: "",
-        email: "",
-        listDesk: [],
-        description: "",
+        name: office.getEmployee(employeeId).name,
+        email: office.getEmployee(employeeId).email,
+        listDesk: office.getEmployee(employeeId).listDesk,
+        description: office.getEmployee(employeeId).description,
     });
-    const [states, setStates] = useState<string[]>([]);
+    const [states, setStates] = useState<string[]>(employee.listDesk);
     const [showPopup, setShowPopup] = useState<Boolean>(false);
 
     function handleShow() {
-        const employeeData = office.getEmployee(employeeId);
-        setEmployee(employeeData);
-        setStates(employeeData.listDesk);
         setShowPopup(true);
     }
       

@@ -1,16 +1,16 @@
-import {useContext} from 'react';
+import { useState } from "react";
 import {Desk} from "../../../models/entities/Desk";
+import { Employee } from '../../../models/entities/Employee';
 import EditDeskPopup from '../../components/popups/DeskPopups.tsx/EditDeskPopup';
-import { useOffice } from '../../providers/OfficeProvider';
+import { useOffice } from "../../providers/OfficeProvider";
 
 type DeskAssignedProps = {
-    desk: Desk
+    desk: Desk,
+    employeeAssigned: Employee,
 }
 
-function DeskAssigned({desk}: DeskAssignedProps) {
-    const office = useOffice();
-    const employeeAssigned = office.getEmployeeAssigned(desk.id);
-    
+function DeskAssignedItem({desk, employeeAssigned}: DeskAssignedProps) {
+
     return (
         <div className="group">
             <div className="grid">
@@ -26,4 +26,4 @@ function DeskAssigned({desk}: DeskAssignedProps) {
     )
 }
 
-export default DeskAssigned;
+export default DeskAssignedItem;

@@ -1,21 +1,46 @@
-import {useState, useContext, ChangeEvent, FormEvent, ReactElement} from 'react';
+import React, {useState, useContext, ChangeEvent, FormEvent, ReactElement} from 'react';
 import { Desk, DeskData } from '../../../../models/entities/Desk';
+import { Employee } from '../../../../models/entities/Employee';
 import { useOffice } from '../../../providers/OfficeProvider';
 
 interface Props {
     children: ReactElement;
     deskId: string;
 }
+// class EditDeskPopup extends React.Component {
+//     office = useOffice();
+
+//     constructor(props:Props) {
+//         super(props);
+
+//         this.state = this.office.getDesk(props.deskId);
+//         this.handleInputChange = this.handleInputChange.bind(this);
+//         this.handleSubmit = this.handleSubmit.bind(this);
+//     }
+
+//     handleInputChange() {
+
+//     }
+
+//     handleSubmit() {
+
+//     }
+
+//     render() {
+//         return ()
+//     }
+// }
+
 function EditDeskPopup({children, deskId}: Props) {
     const office = useOffice();
     const [desk, setDesk] = useState<DeskData>({
-        name:'',
-        description:'',
-    }) 
+        name: office.getDesk(deskId).name,
+        description: office.getDesk(deskId).description,
+    });
+    const [employeeAssigned, setEmployeeAssigned] = useState<Employee>(office.getEmployeeAssigned(deskId));
     const [showPopup, setShowPopup] = useState<Boolean>(false);
 
     function handleShow() {
-        setDesk(office.getDesk(deskId));
         setShowPopup(true);
     }
       
@@ -44,14 +69,16 @@ function EditDeskPopup({children, deskId}: Props) {
     }
 
     function handleAssign(e:ChangeEvent<HTMLSelectElement>) {
-        if(e.target.value === 'none')
+        if(e.target.value === 'none') {
+            console.log(deskId);
             office.unassignADesk(deskId);
-        else
+            setEmployeeAssigned(undefined);
+        } else {
             office.assignDesk(deskId, e.target.value);
+            setEmployeeAssigned(office.getEmployee(e.target.value));
+        }
     }
 
-
-    const employeeAssigned = office.getEmployeeAssigned(deskId);
     const employeesUnassigned = office.getEmployeesUnassigned();
     const popupContainer = showPopup ? (
         <div className="flex fixed z-[995] bg-gray-200/50 inset-0 items-center justify-center ">

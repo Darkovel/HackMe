@@ -29,7 +29,7 @@ export class Assignment {
             if(deskIndex !== -1) {
                 //Si on trouve un bureau parmis ses préférence
                 //On assign le bureau à l'employé et on supprime le bureau de la liste des bureau disponible
-                desksAssigned.push(new DeskAssigned(desks[deskIndex].id, employees[deskIndex].id));
+                desksAssigned.push(new DeskAssigned(desks[deskIndex].id, employeesPref[currentIndex].id));
                 desks.splice(deskIndex,1);
             } else {
                 //Si on ne trouve pas de bureau disponible parmis les préférences de l'employer

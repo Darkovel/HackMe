@@ -9,7 +9,7 @@ enum EventOffice{
 }
 
 export class Office {
-    constructor(private _desks, private _employees, private _desksAssigned) {
+    constructor(private _desks: Desk[], private _employees:Employee[], private _desksAssigned:DeskAssigned[]) {
     };
 
 //#region events
@@ -99,7 +99,7 @@ export class Office {
             return;
 
         employeeEdited.editEmployee(newData);
-        this._employees.map((employee) => employee.id === employeeId ? employeeEdited : employee);
+        this._employees = this._employees.map((employee) => employee.id === employeeId ? employeeEdited : employee);
 
         //Envoi l'event
         this.sendEvent(EventOffice.employee);
@@ -107,7 +107,7 @@ export class Office {
 
     public deleteEmployee(employeeId: EmployeeId) {
         this._employees = this._employees.filter((employee) => employee.id !== employeeId);
-        this._desksAssigned = this._desksAssigned.filter((desk) => desk.employeeId !== employeeId);
+        this.unassignEmployee(employeeId);
 
         //Envoie l'event
         this.sendEvent(EventOffice.employee);
@@ -166,16 +166,17 @@ export class Office {
     public unassignADesk(deskId: DeskId) {
         this.unassignDesk(deskId);
 
+        console.log(this._desksAssigned);
         //Envoi l'event
         this.sendEvent(EventOffice.deskAssigned);
     }
 
     private unassignDesk(deskId: DeskId) {
-        this._desksAssigned.filter((deskAssigned) => deskAssigned.deskId !== deskId);
+        this._desksAssigned = this._desksAssigned.filter((deskAssigned) => deskAssigned.deskId !== deskId);
     }
 
     private unassignEmployee(employeeId: EmployeeId) {
-        this._desksAssigned.filter((deskAssigned) => deskAssigned.employeeId !== employeeId);
+        this._desksAssigned = this._desksAssigned.filter((deskAssigned) => deskAssigned.employeeId !== employeeId);
     }
 
     public unassignAllDesk() {
